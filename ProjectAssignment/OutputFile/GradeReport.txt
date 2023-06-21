@@ -1,0 +1,9 @@
+LIST OF STUDENTS AND GRADES
+
+NAME			ID				PERCENTAGE	GRADE
+Abdullah    	A19EE0180		85%			A
+LuDong      	A19EE0160		70%			B
+Syarifah    	AC12CS678		55%			F
+Sivarajah   	AC12CS123		65%			C
+Wendy       	B19EE0167		75%			B
+Akmal       	B19EE0122		75%			B
