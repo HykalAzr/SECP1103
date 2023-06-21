@@ -12,13 +12,13 @@ struct Student {
 };
 
 void readFile(struct Student students[], int* numStudents, char* ansScheme) {
-    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHub Repo\\SECP1103\\ProjectAssignment\\InputFile\\StudentAnswers.dat", "r");
+    FILE* file = fopen("\\InputFile\\StudentAnswers.dat", "r");
     if (file == NULL) {
         printf("Error opening student file.\n");
         return;
     }
     
-    FILE* fileAns = fopen("C:\\Users\\HAIKAL\\GitHub Repo\\SECP1103\\ProjectAssignment\\InputFile\\CorrectAnswer.txt", "r");
+    FILE* fileAns = fopen("\\InputFile\\CorrectAnswer.txt", "r");
     if (fileAns == NULL) {
         printf("Error reading answer file.\n");
         return;
@@ -63,7 +63,7 @@ void printMissQuestion(const int numMissed, const int missedQuestions[], const c
 }
 
 void printReport(const char correctAnswers[], const struct Student students[], const int numStudents, int missedQuestions[], char missedAnswers[][2]) {
-    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHub Repo\\SECP1103\\ProjectAssignment\\OutputFile\\GradeReport.txt", "w");
+    FILE* file = fopen("\\OutputFile\\GradeReport.txt", "w");
 
     if (file == NULL) {
         printf("Error creating file.\n");
