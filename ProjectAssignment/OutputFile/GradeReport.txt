@@ -7,3 +7,17 @@ Syarifah    	AC12CS678		55%			F
 Sivarajah   	AC12CS123		65%			C
 Wendy       	B19EE0167		75%			B
 Akmal       	B19EE0122		75%			B
+Affendi     	B20EE0224		35%			F
+Daniel      	B19EE0325		65%			C
+Naufal      	B20EE0207		35%			F
+Rafik       	B19EE0598		70%			B
+Putra       	B22EE0389		65%			C
+Putri       	B19EE0177		35%			F
+Jakel       	B23EE0264		85%			A
+Yakult      	B19EE0432		35%			F
+Vitagen     	B21EE0341		75%			B
+Ali         	B22EE0250		35%			F
+Abu         	B18EE0110		75%			B
+Ramen       	B22EE0232		85%			A
+Tempura     	B22EE0226		85%			A
+Nexus       	B22EE0273		85%			A
