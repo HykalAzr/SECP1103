@@ -4,21 +4,18 @@
 //#define ENABLE_MANUAL_DEBUG
 #define MAX_STUDENTS 50
 #define MAX_QUESTIONS 20
+#define MAX_LENS 20
 
-struct Student {
-    char name[20];
-    char id[20];
-    char answers[MAX_QUESTIONS];
-};
-
-void readFile(struct Student students[], int* numStudents, char* ansScheme) {
-    FILE* file = fopen("\\InputFile\\StudentAnswers.dat", "r");
+void readFile(char students_Name[][MAX_LENS], char students_Id[][MAX_LENS], char students_Answer[][MAX_QUESTIONS], int* numStudents, char* ansScheme) {
+    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\InputFile\\StudentAnswers.dat", "r"); // Absolute Path
+    //FILE* file = fopen("InputFile\\StudentAnswers.dat", "r"); // Relative Path
     if (file == NULL) {
         printf("Error opening student file.\n");
         return;
     }
     
-    FILE* fileAns = fopen("\\InputFile\\CorrectAnswer.txt", "r");
+    FILE* fileAns = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\InputFile\\CorrectAnswer.txt", "r"); // Absolute Path
+    //FILE* fileAns = fopen("InputFile\\CorrectAnswer.txt", "r"); // Relative Path
     if (fileAns == NULL) {
         printf("Error reading answer file.\n");
         return;
@@ -29,25 +26,35 @@ void readFile(struct Student students[], int* numStudents, char* ansScheme) {
     }
 
     *numStudents = 0;
+
+    #ifdef ENABLE_MANUAL_DEBUG
+    printf("numStudents\t: %d\n", *numStudents);
+    #endif
+    
     while (!feof(file) && *numStudents < MAX_STUDENTS) {
-        fscanf(file, "%s %s", students[*numStudents].name, students[*numStudents].id);
+        fscanf(file, "%s %s", students_Name[*numStudents], students_Id[*numStudents]);
         for (int i = 0; i < MAX_QUESTIONS; i++) {
-            fscanf(file, " %c ", &students[*numStudents].answers[i]);
+            fscanf(file, " %c ", students_Answer[*numStudents] + i);
         }
         (*numStudents)++;
+        #ifdef ENABLE_MANUAL_DEBUG
+        //printf("students_Name\t: %s\n", students_Name[*numStudents]);
+        printf("numStudents\t: %d\n", *numStudents);
+        #endif
     }
 
     fclose(file);
+    fclose(fileAns);
 }
 
-void compareAnswer(const char correctAnswers[], const struct Student student, int* numMissed, int missedQuestions[], char missedAnswers[][2]) {
+void compareAnswer(const char correctAnswers[MAX_QUESTIONS], const char student_Name[MAX_LENS], const char student_Id[MAX_LENS], const char student_Answer[MAX_LENS], int* numMissed, int missedQuestions[], char missedAnswers[][2]) {
     *numMissed = 0;
 
     for (int i = 0; i < MAX_QUESTIONS; i++) {
-        if (student.answers[i] != correctAnswers[i]) {
+        if (student_Answer[i] != correctAnswers[i]) {
             missedQuestions[*numMissed] = i + 1;
             missedAnswers[*numMissed][0] = correctAnswers[i];
-            missedAnswers[*numMissed][1] = student.answers[i];
+            missedAnswers[*numMissed][1] = student_Answer[i];
             (*numMissed)++;
         }
     }
@@ -62,8 +69,9 @@ void printMissQuestion(const int numMissed, const int missedQuestions[], const c
     }
 }
 
-void printReport(const char correctAnswers[], const struct Student students[], const int numStudents, int missedQuestions[], char missedAnswers[][2]) {
-    FILE* file = fopen("\\OutputFile\\GradeReport.txt", "w");
+void printReport(const char correctAnswers[], const char students_Name[MAX_STUDENTS][20], const char students_Id[MAX_STUDENTS][20], const char students_Answer[MAX_STUDENTS][MAX_QUESTIONS], const int numStudents, int missedQuestions[], char missedAnswers[][2]) {
+    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\OutputFile\\GradeReport.txt", "w"); // Absolute Path
+    // FILE* file = fopen("OutputFile\\GradeReport.txt", "w"); // Relative Path
 
     if (file == NULL) {
         printf("Error creating file.\n");
@@ -75,7 +83,7 @@ void printReport(const char correctAnswers[], const struct Student students[], c
 
     for (int i = 0; i < numStudents; i++) {
         int numMissed;
-        compareAnswer(correctAnswers, students[i], &numMissed, missedQuestions, missedAnswers);
+        compareAnswer(correctAnswers, students_Name[i], students_Id[i], students_Answer[i], &numMissed, missedQuestions, missedAnswers);
         float percentage = (float)(MAX_QUESTIONS - numMissed) / MAX_QUESTIONS * 100;
         char grade;
 
@@ -90,10 +98,10 @@ void printReport(const char correctAnswers[], const struct Student students[], c
         }
 
         #ifdef ENABLE_MANUAL_DEBUG
-        printf("%-12s\t%s\t%.0f%%\t\t%c\n", students[i].name, students[i].id, percentage, grade);
+        printf("%-12s\t%s\t\t%.0f%%\t\t\t%c\n", students_Name[i], students_Id[i], percentage, grade);
         #endif
 
-        fprintf(file, "%-12s\t%s\t\t%.0f%%\t\t\t%c\n", students[i].name, students[i].id, percentage, grade);
+        fprintf(file, "%-12s\t%s\t\t%.0f%%\t\t\t%c\n", students_Name[i], students_Id[i], percentage, grade);
     }
 
     fclose(file);
@@ -102,16 +110,17 @@ void printReport(const char correctAnswers[], const struct Student students[], c
 
 int main() {
 
-    struct Student students[50];
     int numStudents = 0;
     int missedQuestions[MAX_QUESTIONS];
     char missedAnswers[MAX_QUESTIONS][2];
-    char studentID[20];
+    char studentID[MAX_LENS];
     char ansScheme[MAX_QUESTIONS];
 
-    readFile(students, &numStudents, ansScheme);
+    char students_Name[MAX_STUDENTS][MAX_LENS];
+    char students_Id[MAX_STUDENTS][MAX_LENS];
+    char students_Answer[MAX_STUDENTS][MAX_QUESTIONS];
 
-
+    readFile(students_Name, students_Id, students_Answer, &numStudents, ansScheme);
 
     #ifdef ENABLE_MANUAL_DEBUG
     printf("numStudent\t: %d\n", numStudents);
@@ -125,11 +134,18 @@ int main() {
         if(strcmp(studentID, "0") == 0)
             break;
         
-        struct Student student;
+        char student_NameOut[MAX_LENS];
+        char student_IdOut[MAX_LENS];
+        char student_AnswerOut[MAX_QUESTIONS];
         int found = 0;
         for (int i = 0; i < numStudents; i++) {
-            if (strcmp(students[i].id, studentID) == 0) {
-                student = students[i];
+            if (strcmp(students_Id[i], studentID) == 0) {
+                strcpy(student_NameOut, students_Name[i]);
+                strcpy(student_IdOut, students_Id[i]);
+                strncpy(student_AnswerOut, students_Answer[i], 20);
+                #ifdef ENABLE_MANUAL_DEBUG
+                printf("%-12s\t%s\t\n", student_NameOut, student_IdOut);
+                #endif
                 found = 1;
                 break;
             }
@@ -138,11 +154,11 @@ int main() {
         if (found) {
             int numMissed;
 
-            compareAnswer(ansScheme, student, &numMissed, missedQuestions, missedAnswers);
+            compareAnswer(ansScheme, student_NameOut, student_IdOut, student_AnswerOut, &numMissed, missedQuestions, missedAnswers);
 
             printf("\nEXAM RESULT\n\n");
-            printf("Name\t\t: %s\n", student.name);
-            printf("Student ID\t: %s\n", student.id);
+            printf("Name\t\t: %s\n", student_NameOut);
+            printf("Student ID\t: %s\n", student_IdOut);
             printf("Number of questions missed.\t: %d\n\n", numMissed);
             printMissQuestion(numMissed, missedQuestions, missedAnswers);
 
@@ -166,7 +182,7 @@ int main() {
 
     }
 
-    printReport(ansScheme, students, numStudents, missedQuestions, missedAnswers);
+    printReport(ansScheme, students_Name, students_Id, students_Answer, numStudents, missedQuestions, missedAnswers);
 
     return 0;
 }
