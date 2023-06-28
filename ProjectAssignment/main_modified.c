@@ -28,7 +28,8 @@ void printMissQuestion(const int numMissed, const int missedQuestions[], const c
 }
 
 void printReport(const char correctAnswers[], const char students_Name[MAX_STUDENTS][20], const char students_Id[MAX_STUDENTS][20], const char students_Answer[MAX_STUDENTS][MAX_QUESTIONS], const int numStudents, int missedQuestions[], char missedAnswers[][2]) {
-    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\OutputFile\\GradeReport.txt", "w");
+    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\OutputFile\\GradeReport.txt", "w"); // Absolute Path
+    FILE* file = fopen("OutputFile\\GradeReport.txt", "w"); // Relative Path
 
     if (file == NULL) {
         printf("Error creating file.\n");
@@ -78,13 +79,15 @@ int main() {
     char students_Answer[MAX_STUDENTS][MAX_QUESTIONS];
 
 
-    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\InputFile\\StudentAnswers.dat", "r");
+    FILE* file = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\InputFile\\StudentAnswers.dat", "r"); // Absolute Path
+    //FILE* file = fopen("InputFile\\StudentAnswers.dat", "r"); // Relative Path
     if (file == NULL) {
         printf("Error opening student file.\n");
         return 0;
     }
     
-    FILE* fileAns = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\InputFile\\CorrectAnswer.txt", "r");
+    FILE* fileAns = fopen("C:\\Users\\HAIKAL\\GitHubRepo\\SECP1103\\ProjectAssignment\\InputFile\\CorrectAnswer.txt", "r"); // Absolute Path
+    //FILE* fileAns = fopen("InputFile\\CorrectAnswer.txt", "r"); // Relative Path
     if (fileAns == NULL) {
         printf("Error reading answer file.\n");
         return 0;
