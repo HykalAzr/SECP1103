@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+Written by: Haikal Azhar (A20EE0254)
+Date: 28/6/2023
+*/
+
 void changeName(char names[][25], int size);
 
 int main() {
